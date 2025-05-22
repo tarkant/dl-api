@@ -110,3 +110,4 @@ temp_downloads/
 *.log
 .env
 .env.*
+docker-compose.yml

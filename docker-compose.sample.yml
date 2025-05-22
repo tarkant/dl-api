@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  yt-dlp-api:
+    build: .
+    container_name: yt-dlp-api
+    environment:
+      - API_KEY=changeme
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    networks:
+      - yt-dlp-net
+
+  telegram-bot:
+    build: .
+    container_name: telegram-bot
+    environment:
+      - API_KEY=changeme
+      - TELEGRAM_TOKEN=your_telegram_token
+      - API_BASE_URL=http://yt-dlp-api:8000
+      - ALLOWED_GROUP_IDS=[-1001234567890]
+      - ALLOWED_URL_WHITELIST=["https://www.youtube.com/","https://youtu.be/","https://music.youtube.com/","https://www.facebook.com/","https://fb.watch/","https://www.instagram.com/","https://www.tiktok.com/"]
+      - LOG_VERBOSE=1
+    depends_on:
+      - yt-dlp-api
+    restart: unless-stopped
+    command: python telegram_bot.py
+    networks:
+      - yt-dlp-net
+
+networks:
+  yt-dlp-net:
+    driver: bridge
