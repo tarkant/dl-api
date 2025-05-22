@@ -33,7 +33,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            tarkant/dl-api:latest # Always tag with 'latest'
+            tarkant/dl-api:latest
             tarkant/dl-api:${{ steps.get_sha.outputs.SHA_SHORT }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
